@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.2.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>4a39a2bd-090a-4e3a-8296-544080e10821</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.4.2" />
+    <PackageReference Include="Aspire.Hosting.Azure.CognitiveServices" Version="9.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DWG.MCP.Client.Web\DWG.MCP.Client.Web.csproj" />
+    <ProjectReference Include="..\DWG.MCP.SSE\DWG.MCP.SSE.csproj" />
+  </ItemGroup>
+
+</Project>
