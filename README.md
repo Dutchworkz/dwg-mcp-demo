@@ -43,3 +43,27 @@ If you're lucky enough maybe the key will still work, otherwise you have to get 
   },
   "openAiModel" :  "gpt41"
 ```
+
+## MCP Enablement Steps
+
+Follow these minimal steps (see the reference repo: https://github.com/Dutchworkz/dwg-mcp-example) to wire MCP capability into this solution:
+
+1. Update `DWG.MCP.SSE` to use the correct ModelContextProtocol.AspnetCore package.
+
+2. Update `DWG.MCP.SSE/Program.cs` to map (register) the MCP server(s).
+  - Add the code that discovers/loads your MCP tools or server endpoints.
+  - This typically includes adding any required service registrations before building the app.
+
+3. In the same project (`DWG.MCP.SSE`), add a static class decorated with `[McpServerToolType]`.
+  - Each public (async) method in that class becomes an MCP tool.
+  - Keep it small first (e.g. a `PingAsync` method) so you can verify discovery works.
+
+4. Change in the project (`DWG.MCP.Client`) `Program.cs` again to register an `IMcpClient` implementation (remove the nullable `?`).
+  - Replace the existing nullable registration with a concrete implementation.
+  
+5. Modify `Chat.razor` to use the MCP client directly and update the system prompt.
+  - Replace `@inject IServiceProvider ServiceProvider` with `@inject IMcpClient McpClient`.
+  - Adjust initialization to call `await McpClient.ListToolsAsync()` and assign the tools to `chatOptions.Tools`.
+  - Change the system prompt so it no longer instructs you to modify the file; instead prompt the assistant to selectively use available MCP tools.
+
+After completing these five steps you should be able to start the solution, open the chat UI, and have tool metadata flow into the model prompts so that tool calls become possible.
